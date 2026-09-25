@@ -182,15 +182,29 @@ function resetTurn() {
   lockBoard = false;
 }
 
+function getGlobalBestMoves() {
+  const globalBestKey = "memory-best-moves";
+  const savedBest = Number(localStorage.getItem(globalBestKey));
+  if (savedBest > 0) return savedBest;
+
+  const previousBestScores = Object.keys(localStorage)
+    .filter((key) => /^memory-best-\d+$/.test(key))
+    .map((key) => Number(localStorage.getItem(key)))
+    .filter((score) => score > 0);
+  const migratedBest = previousBestScores.length ? Math.min(...previousBestScores) : 0;
+  if (migratedBest) localStorage.setItem(globalBestKey, migratedBest);
+  return migratedBest;
+}
+
 function finishLevel() {
   clearInterval(timerId);
   stopAmbientMusic();
   playWinSong();
-  const bestKey = `memory-best-${level}`;
-  const oldBest = Number(localStorage.getItem(bestKey));
-  if (!oldBest || moves < oldBest) localStorage.setItem(bestKey, moves);
+  const oldBest = getGlobalBestMoves();
+  if (!oldBest || moves < oldBest) localStorage.setItem("memory-best-moves", moves);
+  const currentBest = getGlobalBestMoves();
   updateBest();
-  document.querySelector("#bestSummary").textContent = `Best moves: ${localStorage.getItem(bestKey)}`;
+  document.querySelector("#bestSummary").textContent = `Best moves: ${currentBest}`;
   if (level < 100) {
     unlockedLevel = Math.max(unlockedLevel, level + 1);
     localStorage.setItem("memory-unlocked", unlockedLevel);
@@ -209,7 +223,7 @@ function finishLevel() {
 }
 
 function updateBest() {
-  const best = Number(localStorage.getItem(`memory-best-${level}`)) || 0;
+  const best = getGlobalBestMoves();
   bestElement.textContent = `${best} moves`;
 }
 
