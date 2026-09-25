@@ -4,6 +4,7 @@ const levelSelect = document.querySelector("#levelSelect");
 const timerElement = document.querySelector("#timer");
 const movesElement = document.querySelector("#moves");
 const bestElement = document.querySelector("#best");
+const hintButton = document.querySelector("#hintButton");
 const progressBar = document.querySelector("#progressBar");
 const difficultyLabel = document.querySelector("#difficultyLabel");
 const winModal = document.querySelector("#winModal");
@@ -24,6 +25,7 @@ let soundEnabled = localStorage.getItem("memory-sound") !== "off";
 let round = 0;
 let winTimeoutId = null;
 let hintTimeoutId = null;
+let hintUsed = false;
 let audioContext = null;
 let ambientTimerId = null;
 let ambientGain = null;
@@ -90,6 +92,8 @@ function startGame(selectedLevel = level, beginImmediately = true) {
   clearTimeout(winTimeoutId);
   clearTimeout(hintTimeoutId);
   winModal.hidden = true;
+  hintUsed = false;
+  updateHintButton();
   gameStarted = beginImmediately;
   firstCard = null;
   secondCard = null;
@@ -231,8 +235,13 @@ function formatTime(totalSeconds) {
   return `${String(Math.floor(totalSeconds / 60)).padStart(2, "0")}:${String(totalSeconds % 60).padStart(2, "0")}`;
 }
 
+function updateHintButton() {
+  hintButton.disabled = hintUsed;
+  hintButton.innerHTML = hintUsed ? "Hint used" : "Hint <kbd>H</kbd>";
+}
+
 function showHint() {
-  if (lockBoard || paused || firstCard) return;
+  if (hintUsed || lockBoard || paused || firstCard) return;
   const hidden = [...board.querySelectorAll(".card:not(.is-matched):not(.is-flipped)")];
   if (!hidden.length) return;
   const firstHint = hidden[Math.floor(Math.random() * hidden.length)];
@@ -241,6 +250,8 @@ function showHint() {
   const secondHint = hidden.find((card) => card !== firstHint && cards[Number(card.dataset.index)].id === pairId);
   if (!secondHint) return;
   const activeRound = round;
+  hintUsed = true;
+  updateHintButton();
   lockBoard = true;
   firstHint.classList.add("is-flipped");
   secondHint.classList.add("is-flipped");
@@ -336,7 +347,7 @@ function playWinSong() {
 }
 
 document.querySelector("#restartButton").addEventListener("click", () => startGame(level));
-document.querySelector("#hintButton").addEventListener("click", showHint);
+hintButton.addEventListener("click", showHint);
 document.querySelector("#pauseButton").addEventListener("click", () => {
   paused = !paused;
   document.querySelector("#pauseButton").innerHTML = paused ? "Resume <kbd>Space</kbd>" : "Pause <kbd>Space</kbd>";
