@@ -190,6 +190,7 @@ function finishLevel() {
   const oldBest = Number(localStorage.getItem(bestKey));
   if (!oldBest || moves < oldBest) localStorage.setItem(bestKey, moves);
   updateBest();
+  document.querySelector("#bestSummary").textContent = `Best moves: ${localStorage.getItem(bestKey)}`;
   if (level < 100) {
     unlockedLevel = Math.max(unlockedLevel, level + 1);
     localStorage.setItem("memory-unlocked", unlockedLevel);
