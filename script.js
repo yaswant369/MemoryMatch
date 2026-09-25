@@ -209,8 +209,8 @@ function finishLevel() {
 }
 
 function updateBest() {
-  const best = localStorage.getItem(`memory-best-${level}`);
-  bestElement.textContent = best ? `${best} moves` : "--";
+  const best = Number(localStorage.getItem(`memory-best-${level}`)) || 0;
+  bestElement.textContent = `${best} moves`;
 }
 
 function formatTime(totalSeconds) {
