@@ -5,34 +5,34 @@ const path = require("node:path");
 const port = Number(process.env.PORT) || 3000;
 const root = __dirname;
 const contentTypes = {
-  ".html": "text/html; charset=utf-8",
-  ".css": "text/css; charset=utf-8",
-  ".js": "text/javascript; charset=utf-8",
-  ".svg": "image/svg+xml",
+	".html": "text/html; charset=utf-8",
+	".css": "text/css; charset=utf-8",
+	".js": "text/javascript; charset=utf-8",
+	".svg": "image/svg+xml",
 };
 
 const server = http.createServer((request, response) => {
-  const requestedPath = request.url === "/" ? "/index.html" : request.url.split("?")[0];
-  const filePath = path.resolve(root, `.${requestedPath}`);
+	const requestedPath = request.url === "/" ? "/index.html" : request.url.split("?")[0];
+	const filePath = path.resolve(root, `.${requestedPath}`);
 
-  if (!filePath.startsWith(root)) {
-    response.writeHead(403);
-    response.end("Forbidden");
-    return;
-  }
+	if (!filePath.startsWith(root)) {
+		response.writeHead(403);
+		response.end("Forbidden");
+		return;
+	}
 
-  fs.readFile(filePath, (error, file) => {
-    if (error) {
-      response.writeHead(error.code === "ENOENT" ? 404 : 500, { "Content-Type": "text/plain; charset=utf-8" });
-      response.end(error.code === "ENOENT" ? "Not found" : "Server error");
-      return;
-    }
+	fs.readFile(filePath, (error, file) => {
+		if (error) {
+			response.writeHead(error.code === "ENOENT" ? 404 : 500, { "Content-Type": "text/plain; charset=utf-8" });
+			response.end(error.code === "ENOENT" ? "Not found" : "Server error");
+			return;
+		}
 
-    response.writeHead(200, { "Content-Type": contentTypes[path.extname(filePath)] || "application/octet-stream" });
-    response.end(file);
-  });
+		response.writeHead(200, { "Content-Type": contentTypes[path.extname(filePath)] || "application/octet-stream" });
+		response.end(file);
+	});
 });
 
 server.listen(port, () => {
-  console.log(`MemoryMatch is running at http://localhost:${port}`);
+	console.log(`MemoryMatch is running at http://localhost:${port}`);
 });
