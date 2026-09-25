@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A progressive memory card matching game with 100 levels.">
+  <title>Memory Match | 100 Levels</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#game" aria-label="Memory Match home">
+        <span class="brand-mark">✦</span>
+        <span>Memory<span class="brand-accent">Match</span></span>
+      </a>
+      <div class="top-actions">
+        <button class="icon-button" id="themeButton" type="button" aria-label="Toggle color theme" title="Toggle color theme">◐</button>
+        <button class="icon-button" id="soundButton" type="button" aria-label="Toggle sound" title="Toggle sound">♫</button>
+      </div>
+    </header>
+
+    <section class="hero" id="game">
+      <div>
+        <p class="eyebrow">A tiny workout for a big memory</p>
+        <h1>Find the pairs.<br><em>Keep your streak.</em></h1>
+        <p class="hero-copy">Flip, focus, and clear every board across 100 handcrafted levels.</p>
+      </div>
+      <div class="level-orbit" aria-hidden="true"><span>100</span><small>LEVELS</small></div>
+    </section>
+
+    <section class="game-panel" aria-label="Memory game">
+      <div class="game-toolbar">
+        <div class="level-control">
+          <label for="levelSelect">Level</label>
+          <select id="levelSelect" aria-label="Choose level"></select>
+          <span class="difficulty" id="difficultyLabel">Beginner</span>
+        </div>
+        <div class="stats" aria-live="polite">
+          <div class="stat"><span>Time</span><strong id="timer">00:00</strong></div>
+          <div class="stat"><span>Moves</span><strong id="moves">0</strong></div>
+          <div class="stat"><span>Best</span><strong id="best">--</strong></div>
+        </div>
+        <div class="toolbar-actions">
+          <button class="text-button" id="hintButton" type="button">Hint <kbd>H</kbd></button>
+          <button class="text-button" id="pauseButton" type="button">Pause <kbd>Space</kbd></button>
+          <button class="primary-button" id="restartButton" type="button">↻ Restart</button>
+        </div>
+      </div>
+
+      <div class="progress-track" aria-label="Level progress"><span id="progressBar"></span></div>
+      <div class="board" id="board" aria-label="Card board"></div>
+      <p class="tip"><span>⌁</span> Match all pairs to unlock the next level</p>
+    </section>
+  </main>
+
+  <div class="modal-backdrop" id="winModal" hidden>
+    <section class="win-modal" role="dialog" aria-modal="true" aria-labelledby="winTitle">
+      <button class="close-button" id="closeModal" type="button" aria-label="Close">×</button>
+      <div class="win-icon">✦</div>
+      <p class="eyebrow">Board complete</p>
+      <h2 id="winTitle">Beautifully done.</h2>
+      <p id="completionSummary">You cleared level <strong id="completedLevel">1</strong> in <strong id="completedMoves">0</strong> moves.</p>
+      <div class="modal-actions">
+        <button class="text-button" id="replayButton" type="button">Replay level</button>
+        <button class="primary-button" id="nextButton" type="button">Next level →</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="startModal">
+    <section class="win-modal start-modal" role="dialog" aria-modal="true" aria-labelledby="startTitle">
+      <div class="win-icon">✦</div>
+      <p class="eyebrow">Memory Match</p>
+      <h2 id="startTitle">Ready to focus?</h2>
+      <p>Match every pair, beat your best score, and unlock all 100 levels.</p>
+      <button class="primary-button start-button" id="playButton" type="button">Play game →</button>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
