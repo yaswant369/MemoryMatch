@@ -189,6 +189,7 @@ function finishLevel() {
   const bestKey = `memory-best-${level}`;
   const oldBest = Number(localStorage.getItem(bestKey));
   if (!oldBest || moves < oldBest) localStorage.setItem(bestKey, moves);
+  updateBest();
   if (level < 100) {
     unlockedLevel = Math.max(unlockedLevel, level + 1);
     localStorage.setItem("memory-unlocked", unlockedLevel);
@@ -208,7 +209,7 @@ function finishLevel() {
 
 function updateBest() {
   const best = localStorage.getItem(`memory-best-${level}`);
-  bestElement.textContent = best ? `${best}` : "--";
+  bestElement.textContent = best ? `${best} moves` : "--";
 }
 
 function formatTime(totalSeconds) {

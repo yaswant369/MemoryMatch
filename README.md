@@ -21,7 +21,7 @@ MemoryMatch is a responsive memory card matching game built with plain HTML, CSS
   - Heroic: levels 85-99
   - Champion: level 100
 - Progressive card-pair difficulty
-- Timer, move counter, best score, and level progress bar
+- Timer, move counter, and per-level best score showing the fewest moves
 - Restart, pause/resume, hint, and level selection controls
 - Dark mode with saved preference
 - Sound effects for flips, matches, mistakes, level changes, and wins
